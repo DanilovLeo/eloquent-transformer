@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 
 const API_KEY = "e7cf14dc-7f79-42c8-9b8b-88484c006486";
@@ -48,7 +48,8 @@ const Humanize = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to check document status");
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to check document status");
       }
 
       const data: DocumentResponse = await response.json();
@@ -67,7 +68,7 @@ const Humanize = () => {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to check document status",
+        description: error.message || "Failed to check document status",
       });
       setIsProcessing(false);
     }
@@ -101,7 +102,11 @@ const Humanize = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to submit text");
+        const errorData = await response.json();
+        if (errorData.error === "Insufficient credits") {
+          throw new Error("You have insufficient credits. Please purchase more credits to continue using the service.");
+        }
+        throw new Error(errorData.error || "Failed to submit text");
       }
 
       const data: HumanizeResponse = await response.json();
@@ -111,7 +116,7 @@ const Humanize = () => {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to submit text for humanization",
+        description: error.message || "Failed to submit text for humanization",
       });
       setIsProcessing(false);
     }
