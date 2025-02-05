@@ -3,7 +3,6 @@ import {
   Auth,
   User,
   GoogleAuthProvider,
-  FacebookAuthProvider,
   signInWithPopup,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -16,7 +15,6 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   signInWithGoogle: () => Promise<void>;
-  signInWithFacebook: () => Promise<void>;
   signInWithEmail: (email: string, password: string) => Promise<void>;
   signUpWithEmail: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
@@ -70,15 +68,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const signInWithFacebook = async () => {
-    try {
-      const provider = new FacebookAuthProvider();
-      await signInWithPopup(auth, provider);
-    } catch (error) {
-      handleAuthError(error);
-    }
-  };
-
   const signInWithEmail = async (email: string, password: string) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
@@ -107,7 +96,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     user,
     loading,
     signInWithGoogle,
-    signInWithFacebook,
     signInWithEmail,
     signUpWithEmail,
     logout

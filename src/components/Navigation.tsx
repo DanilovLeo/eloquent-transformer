@@ -11,7 +11,7 @@ import {
 import { Globe, LogIn, LogOut } from "lucide-react";
 
 export const Navigation = () => {
-  const { user, signInWithGoogle, signInWithFacebook, logout } = useAuth();
+  const { user, signInWithGoogle, logout } = useAuth();
   const { t, i18n } = useTranslation();
 
   const languages = [
@@ -73,9 +73,6 @@ export const Navigation = () => {
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem onClick={() => signInWithGoogle()}>
                     Sign in with Google
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => signInWithFacebook()}>
-                    Sign in with Facebook
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
