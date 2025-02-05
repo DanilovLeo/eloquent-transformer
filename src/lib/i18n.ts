@@ -47,7 +47,23 @@ const resources = {
       "readabilityLevel": "Readability Level",
       "purpose": "Purpose",
       "outputText": "Output Text",
-      "processing": "Processing..."
+      "processing": "Processing...",
+      // Auth page
+      "welcomeBack": "Welcome Back",
+      "createAccount": "Create Account",
+      "email": "Email",
+      "password": "Password",
+      "orContinueWith": "Or continue with",
+      "signInWithGoogle": "Sign in with Google",
+      "signUp": "Sign Up",
+      // New home page sections
+      "whyChooseUs": "Why Choose AI Humanizer",
+      "securityTitle": "Secure & Private",
+      "securityDesc": "Your content is encrypted and never stored permanently",
+      "aiTitle": "Advanced AI",
+      "aiDesc": "State-of-the-art AI models for natural text transformation",
+      "speedTitle": "Lightning Fast",
+      "speedDesc": "Get results in seconds, not minutes"
     }
   },
   es: {
@@ -95,7 +111,23 @@ const resources = {
       "readabilityLevel": "Nivel de Legibilidad",
       "purpose": "Propósito",
       "outputText": "Texto de Salida",
-      "processing": "Procesando..."
+      "processing": "Procesando...",
+      // Auth page
+      "welcomeBack": "Bienvenido de nuevo",
+      "createAccount": "Crear cuenta",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "orContinueWith": "O continuar con",
+      "signInWithGoogle": "Iniciar sesión con Google",
+      "signUp": "Registrarse",
+      // New home page sections
+      "whyChooseUs": "Por qué elegir AI Humanizer",
+      "securityTitle": "Seguro y privado",
+      "securityDesc": "Tu contenido está encriptado y nunca se almacena permanentemente",
+      "aiTitle": "IA avanzada",
+      "aiDesc": "Modelos de IA de última generación para la transformación natural del texto",
+      "speedTitle": "Súper rápido",
+      "speedDesc": "Obtén resultados en segundos, no en minutos"
     }
   },
   ru: {
@@ -143,7 +175,23 @@ const resources = {
       "readabilityLevel": "Уровень читаемости",
       "purpose": "Цель",
       "outputText": "Выходной текст",
-      "processing": "Обработка..."
+      "processing": "Обработка...",
+      // Auth page
+      "welcomeBack": "Добро пожаловать обратно",
+      "createAccount": "Создать аккаунт",
+      "email": "Электронная почта",
+      "password": "Пароль",
+      "orContinueWith": "Или продолжить с",
+      "signInWithGoogle": "Войти с помощью Google",
+      "signUp": "Зарегистрироваться",
+      // New home page sections
+      "whyChooseUs": "Почему выбирают AI Humanizer",
+      "securityTitle": "Безопасно и конфиденциально",
+      "securityDesc": "Ваш контент зашифрован и никогда не хранится постоянно",
+      "aiTitle": "Современный ИИ",
+      "aiDesc": "Современные модели ИИ для естественной трансформации текста",
+      "speedTitle": "Молниеносно быстро",
+      "speedDesc": "Получите результаты за секунды, а не минуты"
     }
   },
   ar: {
@@ -191,7 +239,23 @@ const resources = {
       "readabilityLevel": "مستوى القراءة",
       "purpose": "الغرض",
       "outputText": "نص الإخراج",
-      "processing": "جاري المعالجة..."
+      "processing": "جاري المعالجة...",
+      // Auth page
+      "welcomeBack": "مرحبًا بعودتك",
+      "createAccount": "إنشاء حساب",
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "orContinueWith": "أو تابع مع",
+      "signInWithGoogle": "تسجيل الدخول باستخدام Google",
+      "signUp": "سجل",
+      // New home page sections
+      "whyChooseUs": "لماذا تختار AI Humanizer",
+      "securityTitle": "آمن وخاص",
+      "securityDesc": "محتواك مشفر ولا يتم تخزينه بشكل دائم",
+      "aiTitle": "ذكاء اصطناعي متقدم",
+      "aiDesc": "نماذج ذكاء اصطناعي متطورة لتحويل النص بشكل طبيعي",
+      "speedTitle": "سريع كالصاروخ",
+      "speedDesc": "احصل على النتائج في ثوانٍ، وليس دقائق"
     }
   },
   de: {
@@ -239,7 +303,23 @@ const resources = {
       "readabilityLevel": "Lesbarkeitsstufe",
       "purpose": "Zweck",
       "outputText": "Ausgabetext",
-      "processing": "Verarbeitung..."
+      "processing": "Verarbeitung...",
+      // Auth page
+      "welcomeBack": "Willkommen zurück",
+      "createAccount": "Konto erstellen",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "orContinueWith": "Oder fortfahren mit",
+      "signInWithGoogle": "Mit Google anmelden",
+      "signUp": "Registrieren",
+      // New home page sections
+      "whyChooseUs": "Warum AI Humanizer wählen",
+      "securityTitle": "Sicher & Privat",
+      "securityDesc": "Ihr Inhalt ist verschlüsselt und wird niemals dauerhaft gespeichert",
+      "aiTitle": "Fortschrittliche KI",
+      "aiDesc": "Modernste KI-Modelle für die natürliche Texttransformation",
+      "speedTitle": "Blitzschnell",
+      "speedDesc": "Erhalten Sie Ergebnisse in Sekunden, nicht Minuten"
     }
   },
   sv: {
@@ -287,7 +367,23 @@ const resources = {
       "readabilityLevel": "Läsbarhetsnivå",
       "purpose": "Syfte",
       "outputText": "Utdata text",
-      "processing": "Bearbetar..."
+      "processing": "Bearbetar...",
+      // Auth page
+      "welcomeBack": "Välkommen tillbaka",
+      "createAccount": "Skapa konto",
+      "email": "E-post",
+      "password": "Lösenord",
+      "orContinueWith": "Eller fortsätt med",
+      "signInWithGoogle": "Logga in med Google",
+      "signUp": "Registrera",
+      // New home page sections
+      "whyChooseUs": "Varför välja AI Humanizer",
+      "securityTitle": "Säkert och privat",
+      "securityDesc": "Ditt innehåll är krypterat och lagras aldrig permanent",
+      "aiTitle": "Avancerad AI",
+      "aiDesc": "State-of-the-art AI-modeller för naturlig texttransformation",
+      "speedTitle": "Lynsnabbt",
+      "speedDesc": "Få resultat på sekunder, inte minuter"
     }
   },
   fr: {
@@ -335,7 +431,23 @@ const resources = {
       "readabilityLevel": "Niveau de lisibilité",
       "purpose": "But",
       "outputText": "Texte de sortie",
-      "processing": "Traitement..."
+      "processing": "Traitement...",
+      // Auth page
+      "welcomeBack": "Bienvenue à nouveau",
+      "createAccount": "Créer un compte",
+      "email": "E-mail",
+      "password": "Mot de passe",
+      "orContinueWith": "Ou continuez avec",
+      "signInWithGoogle": "Se connecter avec Google",
+      "signUp": "S'inscrire",
+      // New home page sections
+      "whyChooseUs": "Pourquoi choisir AI Humanizer",
+      "securityTitle": "Sécurisé et privé",
+      "securityDesc": "Votre contenu est crypté et jamais stocké de manière permanente",
+      "aiTitle": "IA avancée",
+      "aiDesc": "Modèles d'IA de pointe pour la transformation naturelle du texte",
+      "speedTitle": "Éclair rapide",
+      "speedDesc": "Obtenez des résultats en quelques secondes, pas en minutes"
     }
   }
 };
