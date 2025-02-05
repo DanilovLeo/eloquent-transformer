@@ -10,6 +10,7 @@ import {
   signOut
 } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
+import { useToast } from "@/components/ui/use-toast";
 
 interface AuthContextType {
   user: User | null;
@@ -26,36 +27,80 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setUser(user);
-      setLoading(false);
-    });
+    try {
+      const unsubscribe = auth.onAuthStateChanged((user) => {
+        setUser(user);
+        setLoading(false);
+      });
 
-    return unsubscribe;
+      return unsubscribe;
+    } catch (error) {
+      console.error("Auth initialization error:", error);
+      setLoading(false);
+      toast({
+        title: "Authentication Error",
+        description: "There was a problem initializing authentication. Please try again later.",
+        variant: "destructive",
+      });
+    }
   }, []);
 
+  const handleAuthError = (error: any) => {
+    console.error("Auth error:", error);
+    let message = "An error occurred during authentication.";
+    if (error.code === 'auth/configuration-not-found') {
+      message = "Authentication service is not properly configured. Please try again later.";
+    }
+    toast({
+      title: "Authentication Error",
+      description: message,
+      variant: "destructive",
+    });
+  };
+
   const signInWithGoogle = async () => {
-    const provider = new GoogleAuthProvider();
-    await signInWithPopup(auth, provider);
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+    } catch (error) {
+      handleAuthError(error);
+    }
   };
 
   const signInWithFacebook = async () => {
-    const provider = new FacebookAuthProvider();
-    await signInWithPopup(auth, provider);
+    try {
+      const provider = new FacebookAuthProvider();
+      await signInWithPopup(auth, provider);
+    } catch (error) {
+      handleAuthError(error);
+    }
   };
 
   const signInWithEmail = async (email: string, password: string) => {
-    await signInWithEmailAndPassword(auth, email, password);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      handleAuthError(error);
+    }
   };
 
   const signUpWithEmail = async (email: string, password: string) => {
-    await createUserWithEmailAndPassword(auth, email, password);
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      handleAuthError(error);
+    }
   };
 
   const logout = async () => {
-    await signOut(auth);
+    try {
+      await signOut(auth);
+    } catch (error) {
+      handleAuthError(error);
+    }
   };
 
   const value = {

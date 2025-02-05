@@ -12,6 +12,17 @@ const firebaseConfig = {
   measurementId: "G-9D5BYS6P16"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+
+// Initialize Analytics only in browser environment
+let analytics = null;
+if (typeof window !== 'undefined') {
+  analytics = getAnalytics(app);
+}
+
+// Initialize Auth
 export const auth = getAuth(app);
+
+// Export app instance if needed elsewhere
+export default app;
