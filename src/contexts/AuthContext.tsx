@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { 
-  Auth,
   User,
   GoogleAuthProvider,
   signInWithPopup,
@@ -49,9 +48,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const handleAuthError = (error: any) => {
     console.error("Auth error:", error);
     let message = "An error occurred during authentication.";
-    if (error.code === 'auth/configuration-not-found') {
+    
+    if (error.code === 'auth/unauthorized-domain') {
+      message = "This domain is not authorized for authentication. Please contact support.";
+    } else if (error.code === 'auth/configuration-not-found') {
       message = "Authentication service is not properly configured. Please try again later.";
+    } else if (error.code === 'auth/popup-closed-by-user') {
+      message = "Authentication was cancelled. Please try again.";
     }
+
     toast({
       title: "Authentication Error",
       description: message,
