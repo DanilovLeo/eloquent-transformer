@@ -1,3 +1,4 @@
+
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
@@ -22,7 +23,7 @@ import {
 import { useState } from "react";
 
 export const Navigation = () => {
-  const { user, signInWithGoogle, logout } = useAuth();
+  const { user, logout } = useAuth();
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [showSignOutDialog, setShowSignOutDialog] = useState(false);
@@ -48,6 +49,7 @@ export const Navigation = () => {
   const handleSignOutConfirm = async () => {
     await logout();
     setShowSignOutDialog(false);
+    navigate('/');
   };
 
   return (
@@ -59,9 +61,11 @@ export const Navigation = () => {
               AI Humanizer
             </Link>
             <div className="flex items-center gap-4">
-              <Link to="/humanize">
-                <Button variant="ghost">{t('humanize')}</Button>
-              </Link>
+              {user && (
+                <Link to="/humanize">
+                  <Button variant="ghost">{t('humanize')}</Button>
+                </Link>
+              )}
               <Link to="/pricing">
                 <Button variant="ghost">{t('pricing')}</Button>
               </Link>
@@ -103,15 +107,18 @@ export const Navigation = () => {
       <AlertDialog open={showSignOutDialog} onOpenChange={setShowSignOutDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{t('confirmSignOut')}</AlertDialogTitle>
-            <AlertDialogDescription>
-              {t('confirmSignOutMessage')}
+            <AlertDialogTitle className="text-2xl">Ready to leave?</AlertDialogTitle>
+            <AlertDialogDescription className="text-lg">
+              Thank you for using AI Humanizer. We hope to see you again soon!
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
-            <AlertDialogAction onClick={handleSignOutConfirm}>
-              {t('signOut')}
+            <AlertDialogCancel>Stay</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleSignOutConfirm}
+              className="bg-gradient-to-r from-purple-400 to-pink-600 hover:opacity-90"
+            >
+              Sign Out
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

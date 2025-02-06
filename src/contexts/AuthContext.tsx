@@ -10,27 +10,38 @@ import {
 } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from 'react-router-dom';
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  wordCredits: number;
+  useWords: (words: number) => boolean;
   signInWithGoogle: () => Promise<void>;
   signInWithEmail: (email: string, password: string) => Promise<void>;
   signUpWithEmail: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
+const FREE_WORD_CREDITS = 200;
+
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [wordCredits, setWordCredits] = useState(FREE_WORD_CREDITS);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     try {
       const unsubscribe = auth.onAuthStateChanged((user) => {
         setUser(user);
+        if (user) {
+          // Reset credits when user signs in
+          setWordCredits(FREE_WORD_CREDITS);
+        }
         setLoading(false);
       });
 
@@ -45,6 +56,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       });
     }
   }, []);
+
+  const useWords = (words: number) => {
+    if (wordCredits >= words) {
+      setWordCredits(prev => prev - words);
+      return true;
+    }
+    toast({
+      title: "Insufficient Credits",
+      description: "You've run out of free word credits. Please upgrade your plan to continue.",
+      variant: "destructive",
+    });
+    navigate('/pricing');
+    return false;
+  };
 
   const handleAuthError = (error: any) => {
     console.error("Auth error:", error);
@@ -101,6 +126,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const value = {
     user,
     loading,
+    wordCredits,
+    useWords,
     signInWithGoogle,
     signInWithEmail,
     signUpWithEmail,

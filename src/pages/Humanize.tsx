@@ -18,6 +18,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
+import { useAuth } from "@/contexts/AuthContext";
 
 const API_KEY = "e7cf14dc-7f79-42c8-9b8b-88484c006486";
 
@@ -45,6 +46,7 @@ const Humanize = () => {
   const [fileName, setFileName] = useState("");
   const [fileContent, setFileContent] = useState("");
   const { toast } = useToast();
+  const { wordCredits, useWords } = useAuth();
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
@@ -65,8 +67,6 @@ const Humanize = () => {
             title: "File Upload",
             description: "File uploaded successfully. Processing...",
           });
-          // In a real implementation, we would handle PDF and DOCX conversion here
-          // For now, we'll just show a message
           setFileContent("File content would be processed here");
           setInput("File content would be processed here");
         }
@@ -119,6 +119,12 @@ const Humanize = () => {
         title: "Error",
         description: "Text must be at least 50 characters long",
       });
+      return;
+    }
+
+    const wordCount = Math.ceil(input.length / 5);
+    
+    if (!useWords(wordCount)) {
       return;
     }
 
@@ -176,9 +182,14 @@ const Humanize = () => {
   return (
     <div className="min-h-screen p-4">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8 gradient-text text-center animate-fade-in">
-          Humanize Your Text
-        </h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-bold gradient-text animate-fade-in">
+            Humanize Your Text
+          </h1>
+          <div className="text-lg font-semibold">
+            Credits remaining: <span className="text-purple-500">{wordCredits}</span> words
+          </div>
+        </div>
 
         <Tabs defaultValue="text" className="w-full" onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-2 mb-8">
