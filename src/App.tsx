@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Navigation } from "@/components/Navigation";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
@@ -14,17 +14,18 @@ import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import AIDetector from "./pages/AIDetector";
 import Contact from "./pages/Contact";
+import { Routes, Route } from "react-router-dom";
 import "./lib/i18n";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <BrowserRouter>
-      <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <AuthProvider>
           <Navigation />
           <Routes>
             <Route path="/" element={<Home />} />
@@ -52,10 +53,11 @@ const App = () => (
           <footer className="py-6 text-center text-sm text-muted-foreground">
             © 2025 AI Humanizer. All rights reserved.
           </footer>
-        </TooltipProvider>
-      </AuthProvider>
-    </BrowserRouter>
+        </AuthProvider>
+      </BrowserRouter>
+    </TooltipProvider>
   </QueryClientProvider>
 );
 
 export default App;
+
