@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -47,11 +48,23 @@ const PricingCard = ({
   const navigate = useNavigate();
 
   const handlePricingClick = () => {
+    if (isCustom) {
+      window.location.href = "mailto:humanizingaisupport@gmail.com";
+      return;
+    }
+    
     if (!user) {
       navigate('/auth');
     } else {
       // Here we'll implement Stripe checkout
       console.log('Implement Stripe checkout');
+    }
+  };
+
+  const handleWordsInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value.replace(/,/g, ''), 10);
+    if (!isNaN(value) && onWordsChange) {
+      onWordsChange(Math.min(Math.max(value, 10000), 380000));
     }
   };
 
@@ -83,16 +96,24 @@ const PricingCard = ({
                 <span>10,000</span>
                 <span>380,000</span>
               </div>
-              {onWordsChange && (
-                <Slider
-                  defaultValue={[words]}
-                  max={380000}
-                  min={10000}
-                  step={1000}
-                  onValueChange={(value) => onWordsChange(value[0])}
+              <Slider
+                defaultValue={[words]}
+                max={380000}
+                min={10000}
+                step={1000}
+                onValueChange={(value) => onWordsChange && onWordsChange(value[0])}
+              />
+              <p className="text-center mt-2 mb-4">{words.toLocaleString()} words/month</p>
+              <div>
+                <Label htmlFor={`words-${title}`}>Or enter words directly:</Label>
+                <Input
+                  id={`words-${title}`}
+                  type="text"
+                  value={words.toLocaleString()}
+                  onChange={handleWordsInput}
+                  className="mt-2"
                 />
-              )}
-              <p className="text-center mt-2">{words.toLocaleString()} words/month</p>
+              </div>
             </div>
           </>
         ) : (

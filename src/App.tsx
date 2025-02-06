@@ -12,6 +12,8 @@ import Humanize from "./pages/Humanize";
 import Pricing from "./pages/Pricing";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
+import AIDetector from "./pages/AIDetector";
+import Contact from "./pages/Contact";
 import "./lib/i18n";
 
 const queryClient = new QueryClient();
@@ -35,7 +37,16 @@ const App = () => (
                 </ProtectedRoute>
               } 
             />
+            <Route 
+              path="/detector" 
+              element={
+                <ProtectedRoute>
+                  <AIDetector />
+                </ProtectedRoute>
+              } 
+            />
             <Route path="/pricing" element={<Pricing />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <footer className="py-6 text-center text-sm text-muted-foreground">
