@@ -97,7 +97,6 @@ const AIDetector = () => {
         )}
       </div>
     </div>
-  </div>
   );
 };
 
