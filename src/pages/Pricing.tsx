@@ -5,6 +5,8 @@ import { Check } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const calculatePrice = (words: number, isMonthly: boolean) => {
   const minWords = 10000;
@@ -41,6 +43,18 @@ const PricingCard = ({
   onWordsChange?: (value: number) => void;
   isPopular?: boolean;
 }) => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handlePricingClick = () => {
+    if (!user) {
+      navigate('/auth');
+    } else {
+      // Here we'll implement Stripe checkout
+      console.log('Implement Stripe checkout');
+    }
+  };
+
   return (
     <Card className={`p-8 flex flex-col justify-between bg-card hover:bg-secondary/50 transition-colors relative ${isPopular ? 'border-2 border-purple-400' : ''}`}>
       {isPopular && (
@@ -99,16 +113,14 @@ const PricingCard = ({
               : ''
           }`}
           variant={isPopular ? 'default' : 'outline'}
+          onClick={handlePricingClick}
         >
           Get Started
         </Button>
         
-        <Button
-          variant="ghost"
-          className="w-full mb-6"
-        >
+        <p className="text-center text-sm text-muted-foreground mb-6">
           Cancel Anytime
-        </Button>
+        </p>
 
         <h4 className="font-semibold mb-4">Quick look at features:</h4>
         <ul className="space-y-3">

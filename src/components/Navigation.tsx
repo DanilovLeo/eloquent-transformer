@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTranslation } from "react-i18next";
@@ -13,6 +13,7 @@ import { Globe, LogIn, LogOut } from "lucide-react";
 export const Navigation = () => {
   const { user, signInWithGoogle, logout } = useAuth();
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
 
   const languages = [
     { code: 'en', name: 'English' },
@@ -23,6 +24,10 @@ export const Navigation = () => {
     { code: 'sv', name: 'Svenska' },
     { code: 'fr', name: 'Français' }
   ];
+
+  const handleAuthClick = () => {
+    navigate('/auth');
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/40 backdrop-blur-sm bg-background/80">
@@ -63,19 +68,10 @@ export const Navigation = () => {
                 {t('signOut')}
               </Button>
             ) : (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="default">
-                    <LogIn className="mr-2 h-4 w-4" />
-                    {t('signIn')}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => signInWithGoogle()}>
-                    Sign in with Google
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <Button variant="default" onClick={handleAuthClick}>
+                <LogIn className="mr-2 h-4 w-4" />
+                {t('signIn')}
+              </Button>
             )}
           </div>
         </div>

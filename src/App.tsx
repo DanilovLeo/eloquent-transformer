@@ -38,7 +38,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
           <footer className="py-6 text-center text-sm text-muted-foreground">
-            © 2024 AI Humanizer. All rights reserved.
+            © 2025 AI Humanizer. All rights reserved.
           </footer>
         </BrowserRouter>
       </TooltipProvider>
