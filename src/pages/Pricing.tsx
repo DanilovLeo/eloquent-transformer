@@ -63,13 +63,6 @@ const PricingCard = ({
     }
   };
 
-  const handleWordsInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value.replace(/,/g, ''), 10);
-    if (!isNaN(value) && onWordsChange) {
-      onWordsChange(Math.min(Math.max(value, 10000), 380000));
-    }
-  };
-
   const handlePriceInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputPrice = parseFloat(e.target.value);
     if (!isNaN(inputPrice)) {
@@ -90,7 +83,6 @@ const PricingCard = ({
     }
   };
 
-  // Update price input when price changes
   useEffect(() => {
     setPriceInput(price.toString());
   }, [price]);
@@ -117,7 +109,7 @@ const PricingCard = ({
                 <p className="text-sm text-orange-400">{discount}</p>
               )}
               <div className="mt-2">
-                <Label htmlFor={`price-${title}`}>{t('enterPrice')}</Label>
+                <Label htmlFor={`price-${title}`}>Enter Price</Label>
                 <Input
                   id={`price-${title}`}
                   type="number"
@@ -142,18 +134,9 @@ const PricingCard = ({
                 min={10000}
                 step={1000}
                 onValueChange={(value) => onWordsChange && onWordsChange(value[0])}
+                value={[words]}
               />
               <p className="text-center mt-2 mb-4">{words.toLocaleString()} words/month</p>
-              <div>
-                <Label htmlFor={`words-${title}`}>Or enter words directly:</Label>
-                <Input
-                  id={`words-${title}`}
-                  type="text"
-                  value={words.toLocaleString()}
-                  onChange={handleWordsInput}
-                  className="mt-2"
-                />
-              </div>
             </div>
           </>
         ) : (
