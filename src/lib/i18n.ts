@@ -63,7 +63,12 @@ const resources = {
       "aiTitle": "Advanced AI",
       "aiDesc": "State-of-the-art AI models for natural text transformation",
       "speedTitle": "Lightning Fast",
-      "speedDesc": "Get results in seconds, not minutes"
+      "speedDesc": "Get results in seconds, not minutes",
+      "contact": "Contacts",
+      "contacts": "Contacts",
+      "info": "Info",
+      "newCompanyDescription": "We are a new startup which provides its users the ability to get access to the cutting age approach of humanizing the AI written texts in different spheres such as Marketing, Academic and Article.",
+      "newFeedbackMessage": "Please send your feedback, we will take into account your recommendations"
     }
   },
   es: {
@@ -127,7 +132,12 @@ const resources = {
       "aiTitle": "IA avanzada",
       "aiDesc": "Modelos de IA de última generación para la transformación natural del texto",
       "speedTitle": "Súper rápido",
-      "speedDesc": "Obtén resultados en segundos, no en minutos"
+      "speedDesc": "Obtén resultados en segundos, no en minutos",
+      "contact": "Contacts",
+      "contacts": "Contacts",
+      "info": "Info",
+      "newCompanyDescription": "We are a new startup which provides its users the ability to get access to the cutting age approach of humanizing the AI written texts in different spheres such as Marketing, Academic and Article.",
+      "newFeedbackMessage": "Please send your feedback, we will take into account your recommendations"
     }
   },
   ru: {
@@ -161,7 +171,7 @@ const resources = {
       "businessPlan": "Для бизнеса",
       "monthlyDesc": "Гибкий вариант для людей, которые хотят создавать качественный контент.",
       "yearlyDesc": "Лучшее значение для постоянных потребностей в создании контента.",
-      "businessDesc": "Нужны массовые кредиты? Ищете постоянные слова без месячной истечения?",
+      "businessDesc": "Нужны массовые кредиты? Ищете слова permanentes без месячной истечения?",
       "getStarted": "Начать",
       "cancelAnytime": "Отменить в любое время",
       "features": "Быстрый обзор функций:",
@@ -191,7 +201,12 @@ const resources = {
       "aiTitle": "Современный ИИ",
       "aiDesc": "Современные модели ИИ для естественной трансформации текста",
       "speedTitle": "Молниеносно быстро",
-      "speedDesc": "Получите результаты за секунды, а не минуты"
+      "speedDesc": "Получите результаты за секунды, а не минуты",
+      "contact": "Contacts",
+      "contacts": "Contacts",
+      "info": "Info",
+      "newCompanyDescription": "We are a new startup which provides its users the ability to get access to the cutting age approach of humanizing the AI written texts in different spheres such as Marketing, Academic and Article.",
+      "newFeedbackMessage": "Please send your feedback, we will take into account your recommendations"
     }
   },
   ar: {
@@ -255,7 +270,12 @@ const resources = {
       "aiTitle": "ذكاء اصطناعي متقدم",
       "aiDesc": "نماذج ذكاء اصطناعي متطورة لتحويل النص بشكل طبيعي",
       "speedTitle": "سريع كالصاروخ",
-      "speedDesc": "احصل على النتائج في ثوانٍ، وليس دقائق"
+      "speedDesc": "احصل على النتائج في ثوانٍ، وليس دقائق",
+      "contact": "Contacts",
+      "contacts": "Contacts",
+      "info": "Info",
+      "newCompanyDescription": "We are a new startup which provides its users the ability to get access to the cutting age approach of humanizing the AI written texts in different spheres such as Marketing, Academic and Article.",
+      "newFeedbackMessage": "Please send your feedback, we will take into account your recommendations"
     }
   },
   de: {
@@ -319,7 +339,12 @@ const resources = {
       "aiTitle": "Fortschrittliche KI",
       "aiDesc": "Modernste KI-Modelle für die natürliche Texttransformation",
       "speedTitle": "Blitzschnell",
-      "speedDesc": "Erhalten Sie Ergebnisse in Sekunden, nicht Minuten"
+      "speedDesc": "Erhalten Sie Ergebnisse in Sekunden, nicht Minuten",
+      "contact": "Contacts",
+      "contacts": "Contacts",
+      "info": "Info",
+      "newCompanyDescription": "We are a new startup which provides its users the ability to get access to the cutting age approach of humanizing the AI written texts in different spheres such as Marketing, Academic and Article.",
+      "newFeedbackMessage": "Please send your feedback, we will take into account your recommendations"
     }
   },
   sv: {
@@ -383,7 +408,12 @@ const resources = {
       "aiTitle": "Avancerad AI",
       "aiDesc": "State-of-the-art AI-modeller för naturlig texttransformation",
       "speedTitle": "Lynsnabbt",
-      "speedDesc": "Få resultat på sekunder, inte minuter"
+      "speedDesc": "Få resultat på sekunder, inte minuter",
+      "contact": "Contacts",
+      "contacts": "Contacts",
+      "info": "Info",
+      "newCompanyDescription": "We are a new startup which provides its users the ability to get access to the cutting age approach of humanizing the AI written texts in different spheres such as Marketing, Academic and Article.",
+      "newFeedbackMessage": "Please send your feedback, we will take into account your recommendations"
     }
   },
   fr: {
@@ -447,7 +477,12 @@ const resources = {
       "aiTitle": "IA avancée",
       "aiDesc": "Modèles d'IA de pointe pour la transformation naturelle du texte",
       "speedTitle": "Éclair rapide",
-      "speedDesc": "Obtenez des résultats en quelques secondes, pas en minutes"
+      "speedDesc": "Obtenez des résultats en quelques secondes, pas en minutes",
+      "contact": "Contacts",
+      "contacts": "Contacts",
+      "info": "Info",
+      "newCompanyDescription": "We are a new startup which provides its users the ability to get access to the cutting age approach of humanizing the AI written texts in different spheres such as Marketing, Academic and Article.",
+      "newFeedbackMessage": "Please send your feedback, we will take into account your recommendations"
     }
   }
 };

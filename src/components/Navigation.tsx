@@ -70,7 +70,7 @@ export const Navigation = () => {
                 <Button variant="ghost">{t('pricing')}</Button>
               </Link>
               <Link to="/contact">
-                <Button variant="ghost">{t('contact')}</Button>
+                <Button variant="ghost">{t('contacts')}</Button>
               </Link>
               
               <DropdownMenu>

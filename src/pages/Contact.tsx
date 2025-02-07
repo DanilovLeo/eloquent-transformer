@@ -17,16 +17,16 @@ const Contact = () => {
         <h1 className="text-4xl font-bold mb-8 gradient-text">{t('aboutUs')}</h1>
         
         <Card className="p-6 mb-8">
-          <h2 className="text-2xl font-semibold mb-4">{t('ourMission')}</h2>
+          <h2 className="text-2xl font-semibold mb-4">{t('info')}</h2>
           <p className="text-lg text-muted-foreground mb-6">
-            {t('companyDescription')}
+            {t('newCompanyDescription')}
           </p>
         </Card>
 
         <Card className="p-6">
-          <h2 className="text-2xl font-semibold mb-4">{t('contactUs')}</h2>
+          <h2 className="text-2xl font-semibold mb-4">{t('contacts')}</h2>
           <p className="text-lg text-muted-foreground mb-6">
-            {t('feedbackMessage')}
+            {t('newFeedbackMessage')}
           </p>
           
           <Button
