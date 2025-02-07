@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -8,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const calculatePrice = (words: number, isMonthly: boolean) => {
   const minWords = 10000;
@@ -44,8 +44,10 @@ const PricingCard = ({
   onWordsChange?: (value: number) => void;
   isPopular?: boolean;
 }) => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [priceInput, setPriceInput] = useState(price.toString());
 
   const handlePricingClick = () => {
     if (isCustom) {
@@ -68,6 +70,31 @@ const PricingCard = ({
     }
   };
 
+  const handlePriceInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputPrice = parseFloat(e.target.value);
+    if (!isNaN(inputPrice)) {
+      setPriceInput(e.target.value);
+      // Calculate corresponding words based on price
+      const minPrice = title === "Monthly" ? 11.99 : 4.99;
+      const maxPrice = title === "Monthly" ? 199.99 : 149.99;
+      const minWords = 10000;
+      const maxWords = 380000;
+      
+      const priceRange = maxPrice - minPrice;
+      const wordRange = maxWords - minWords;
+      
+      const words = Math.round(((inputPrice - minPrice) / priceRange) * wordRange + minWords);
+      if (onWordsChange && words >= minWords && words <= maxWords) {
+        onWordsChange(words);
+      }
+    }
+  };
+
+  // Update price input when price changes
+  useEffect(() => {
+    setPriceInput(price.toString());
+  }, [price]);
+
   return (
     <Card className={`p-8 flex flex-col justify-between bg-card hover:bg-secondary/50 transition-colors relative ${isPopular ? 'border-2 border-purple-400' : ''}`}>
       {isPopular && (
@@ -89,6 +116,19 @@ const PricingCard = ({
               {discount && (
                 <p className="text-sm text-orange-400">{discount}</p>
               )}
+              <div className="mt-2">
+                <Label htmlFor={`price-${title}`}>{t('enterPrice')}</Label>
+                <Input
+                  id={`price-${title}`}
+                  type="number"
+                  value={priceInput}
+                  onChange={handlePriceInput}
+                  className="mt-1"
+                  step="0.01"
+                  min={title === "Monthly" ? 11.99 : 4.99}
+                  max={title === "Monthly" ? 199.99 : 149.99}
+                />
+              </div>
             </div>
             
             <div className="mb-6">

@@ -58,7 +58,7 @@ export const Navigation = () => {
         <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="text-xl font-bold gradient-text">
-              AI Humanizer
+              Humanizing.ai
             </Link>
             <div className="flex items-center gap-4">
               {user && (
@@ -70,7 +70,7 @@ export const Navigation = () => {
                 <Button variant="ghost">{t('pricing')}</Button>
               </Link>
               <Link to="/contact">
-                <Button variant="ghost">Contact</Button>
+                <Button variant="ghost">{t('contact')}</Button>
               </Link>
               
               <DropdownMenu>

@@ -2,8 +2,11 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Mail } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Contact = () => {
+  const { t } = useTranslation();
+  
   const handleEmailClick = () => {
     window.location.href = "mailto:humanizingaisupport@gmail.com";
   };
@@ -11,19 +14,19 @@ const Contact = () => {
   return (
     <div className="min-h-screen p-4">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8 gradient-text">About Us</h1>
+        <h1 className="text-4xl font-bold mb-8 gradient-text">{t('aboutUs')}</h1>
         
         <Card className="p-6 mb-8">
-          <h2 className="text-2xl font-semibold mb-4">Our Mission</h2>
+          <h2 className="text-2xl font-semibold mb-4">{t('ourMission')}</h2>
           <p className="text-lg text-muted-foreground mb-6">
-            We are a new startup which provides its users the ability to get access to the cutting edge approach of humanizing AI written texts in different spheres such as Marketing, Academic and Article.
+            {t('companyDescription')}
           </p>
         </Card>
 
         <Card className="p-6">
-          <h2 className="text-2xl font-semibold mb-4">Contact Us</h2>
+          <h2 className="text-2xl font-semibold mb-4">{t('contactUs')}</h2>
           <p className="text-lg text-muted-foreground mb-6">
-            Please send your feedback, we will take into account your recommendations
+            {t('feedbackMessage')}
           </p>
           
           <Button

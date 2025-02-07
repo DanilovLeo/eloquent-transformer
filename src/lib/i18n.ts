@@ -334,7 +334,7 @@ const resources = {
       "copyright": "© 2024 AI Humanizer. Alla rättigheter förbehållna.",
       // Home page
       "heroTitle": "Omvandla AI-text till naturligt skrivande",
-      "heroSubtitle": "Vår avancerade AI-teknik omvandlar maskinellt genererad text till naturligt skrivande.",
+      "heroSubtitle": "Vår avancerade KI-teknik omvandlar maskinellt genererad text till naturligt skrivande.",
       "startHumanizing": "Börja humanisera",
       "viewPricing": "Visa priser",
       "featureNaturalTitle": "Naturligt språk",
@@ -353,7 +353,7 @@ const resources = {
       "businessPlan": "För företag",
       "monthlyDesc": "Det flexibla alternativet för individer som vill skapa högkvalitativt innehåll.",
       "yearlyDesc": "Bästa värdet för konsekventa innehållsbehov.",
-      "businessDesc": "Behöver du bulkpoäng? Letar du efter permanenta ord utan månatlig utgång?",
+      "businessDesc": "Behöver du bulkpoäng? Letar du efter permanenta ord utan månatlig utgångdatum?",
       "getStarted": "Kom igång",
       "cancelAnytime": "Avbryt när som helst",
       "features": "Snabb översikt över funktioner:",
@@ -379,7 +379,7 @@ const resources = {
       // New home page sections
       "whyChooseUs": "Varför välja AI Humanizer",
       "securityTitle": "Säkert och privat",
-      "securityDesc": "Ditt innehåll är krypterat och lagras aldrig permanent",
+      "securityDesc": "Mitt innehåll är krypterat och lagras aldrig permanent",
       "aiTitle": "Avancerad AI",
       "aiDesc": "State-of-the-art AI-modeller för naturlig texttransformation",
       "speedTitle": "Lynsnabbt",
