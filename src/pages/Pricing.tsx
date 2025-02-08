@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -8,6 +9,8 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const calculatePrice = (words: number, isMonthly: boolean) => {
   const minWords = 10000;
@@ -22,6 +25,10 @@ const calculatePrice = (words: number, isMonthly: boolean) => {
   const price = minPrice + (words - minWords) * pricePerWord;
   return Math.round(price * 100) / 100;
 };
+
+// Stripe test price IDs - replace with your actual price IDs
+const MONTHLY_PRICE_ID = 'price_monthly';
+const YEARLY_PRICE_ID = 'price_yearly';
 
 const PricingCard = ({
   title,
@@ -47,9 +54,11 @@ const PricingCard = ({
   const { t } = useTranslation();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [priceInput, setPriceInput] = useState(price.toString());
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handlePricingClick = () => {
+  const handlePricingClick = async () => {
     if (isCustom) {
       window.location.href = "mailto:humanizingaisupport@gmail.com";
       return;
@@ -57,9 +66,33 @@ const PricingCard = ({
     
     if (!user) {
       navigate('/auth');
-    } else {
-      // Here we'll implement Stripe checkout
-      console.log('Implement Stripe checkout');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const priceId = title === "Monthly" ? MONTHLY_PRICE_ID : YEARLY_PRICE_ID;
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        body: {
+          priceId,
+          userId: user.id,
+          planType: title.toLowerCase(),
+        },
+      });
+
+      if (error) throw error;
+      if (data?.url) {
+        window.location.href = data.url;
+      }
+    } catch (error) {
+      console.error('Error creating checkout session:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to start checkout process. Please try again.",
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -67,7 +100,6 @@ const PricingCard = ({
     const inputPrice = parseFloat(e.target.value);
     if (!isNaN(inputPrice)) {
       setPriceInput(e.target.value);
-      // Calculate corresponding words based on price
       const minPrice = title === "Monthly" ? 11.99 : 4.99;
       const maxPrice = title === "Monthly" ? 199.99 : 149.99;
       const minWords = 10000;
@@ -158,8 +190,9 @@ const PricingCard = ({
           }`}
           variant={isPopular ? 'default' : 'outline'}
           onClick={handlePricingClick}
+          disabled={isLoading}
         >
-          Get Started
+          {isLoading ? "Processing..." : "Get Started"}
         </Button>
         
         <p className="text-center text-sm text-muted-foreground mb-6">
@@ -183,9 +216,25 @@ const PricingCard = ({
 const Pricing = () => {
   const [monthlyWords, setMonthlyWords] = useState(15000);
   const [yearlyWords, setYearlyWords] = useState(380000);
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
   const monthlyPrice = calculatePrice(monthlyWords, true);
   const yearlyPrice = calculatePrice(yearlyWords, false);
+
+  // Check for successful payment
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+    const sessionId = query.get('session_id');
+    
+    if (sessionId) {
+      toast({
+        title: "Payment Successful",
+        description: "Your subscription has been activated. Enjoy your words!",
+      });
+      navigate('/humanize');
+    }
+  }, [navigate, toast]);
 
   return (
     <div className="min-h-screen pt-20">
