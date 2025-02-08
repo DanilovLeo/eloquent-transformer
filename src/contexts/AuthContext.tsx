@@ -9,7 +9,7 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   wordCredits: number;
-  useWords: (words: number) => boolean;
+  useWords: (words: number) => Promise<boolean>; // Updated to Promise<boolean>
   signInWithGoogle: () => Promise<void>;
   signInWithEmail: (email: string, password: string) => Promise<void>;
   signUpWithEmail: (email: string, password: string) => Promise<void>;
@@ -78,7 +78,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const useWords = async (words: number) => {
+  const useWords = async (words: number): Promise<boolean> => {
     if (!user) return false;
     
     if (wordCredits >= words) {
@@ -129,6 +129,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth`
+        }
       });
       if (error) throw error;
     } catch (error) {
@@ -153,8 +156,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const { error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth`
+        }
       });
       if (error) throw error;
+      toast({
+        title: "Success",
+        description: "Please check your email to verify your account.",
+      });
     } catch (error) {
       handleAuthError(error);
     }
@@ -164,6 +174,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
+      navigate('/');
     } catch (error) {
       handleAuthError(error);
     }
