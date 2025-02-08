@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -7,33 +8,82 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useTranslation } from "react-i18next";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
+import { useToast } from "@/hooks/use-toast";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const { signInWithEmail, signUpWithEmail, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { toast } = useToast();
+
+  const validateEmail = (email: string) => {
+    return email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+  };
+
+  const validatePassword = (password: string) => {
+    return password.length >= 6;
+  };
 
   const handleEmailAuth = async (isSignUp: boolean) => {
     try {
+      if (!validateEmail(email)) {
+        toast({
+          title: "Invalid Email",
+          description: "Please enter a valid email address",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (!validatePassword(password)) {
+        toast({
+          title: "Invalid Password",
+          description: "Password must be at least 6 characters long",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      setLoading(true);
+      
       if (isSignUp) {
         await signUpWithEmail(email, password);
+        toast({
+          title: "Check your email",
+          description: "We've sent you a confirmation link to complete your signup",
+        });
       } else {
         await signInWithEmail(email, password);
+        navigate("/humanize");
       }
-      navigate("/humanize");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Auth error:", error);
+      toast({
+        title: "Authentication Error",
+        description: error?.message || "An error occurred during authentication",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleGoogleSignIn = async () => {
     try {
+      setLoading(true);
       await signInWithGoogle();
-      navigate("/humanize");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Google sign in error:", error);
+      toast({
+        title: "Google Sign In Error",
+        description: error?.message || "Failed to sign in with Google",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,6 +112,7 @@ const Auth = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="border-primary/20"
+                  disabled={loading}
                 />
                 <Input
                   type="password"
@@ -69,12 +120,14 @@ const Auth = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="border-primary/20"
+                  disabled={loading}
                 />
                 <Button 
                   className="w-full bg-gradient-to-r from-primary to-purple-500 hover:opacity-90"
                   onClick={() => handleEmailAuth(false)}
+                  disabled={loading}
                 >
-                  {t("signIn")}
+                  {loading ? "Loading..." : t("signIn")}
                 </Button>
               </TabsContent>
 
@@ -88,6 +141,7 @@ const Auth = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="border-primary/20"
+                  disabled={loading}
                 />
                 <Input
                   type="password"
@@ -95,12 +149,14 @@ const Auth = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="border-primary/20"
+                  disabled={loading}
                 />
                 <Button 
                   className="w-full bg-gradient-to-r from-primary to-purple-500 hover:opacity-90"
                   onClick={() => handleEmailAuth(true)}
+                  disabled={loading}
                 >
-                  {t("signUp")}
+                  {loading ? "Loading..." : t("signUp")}
                 </Button>
               </TabsContent>
             </Tabs>
@@ -121,8 +177,9 @@ const Auth = () => {
                 variant="outline"
                 className="w-full mt-4 border-primary/20 hover:bg-primary/5"
                 onClick={handleGoogleSignIn}
+                disabled={loading}
               >
-                {t("signInWithGoogle")}
+                {loading ? "Loading..." : t("signInWithGoogle")}
               </Button>
             </div>
           </Card>

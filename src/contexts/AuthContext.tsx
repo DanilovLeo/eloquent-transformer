@@ -9,7 +9,7 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   wordCredits: number;
-  useWords: (words: number) => Promise<boolean>; // Updated to Promise<boolean>
+  useWords: (words: number) => Promise<boolean>;
   signInWithGoogle: () => Promise<void>;
   signInWithEmail: (email: string, password: string) => Promise<void>;
   signUpWithEmail: (email: string, password: string) => Promise<void>;
@@ -29,16 +29,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     try {
-      // Set up Supabase auth state listener
-      const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
         setUser(session?.user ?? null);
         if (session?.user) {
-          fetchWordCredits(session.user.id);
+          await fetchWordCredits(session.user.id);
+          if (event === 'SIGNED_IN') {
+            navigate('/humanize');
+          }
         }
         setLoading(false);
       });
 
-      // Initial session check
       supabase.auth.getSession().then(({ data: { session } }) => {
         setUser(session?.user ?? null);
         if (session?.user) {
@@ -53,13 +54,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (error) {
       console.error("Auth initialization error:", error);
       setLoading(false);
-      toast({
-        title: "Authentication Error",
-        description: "There was a problem initializing authentication. Please try again later.",
-        variant: "destructive",
-      });
     }
-  }, []);
+  }, [navigate]);
 
   const fetchWordCredits = async (userId: string) => {
     try {
@@ -110,74 +106,50 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return false;
   };
 
-  const handleAuthError = (error: any) => {
-    console.error("Auth error:", error);
-    let message = "An error occurred during authentication.";
-    
-    if (error.message) {
-      message = error.message;
-    }
-
-    toast({
-      title: "Authentication Error",
-      description: message,
-      variant: "destructive",
-    });
-  };
-
   const signInWithGoogle = async () => {
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/auth`
-        }
-      });
-      if (error) throw error;
-    } catch (error) {
-      handleAuthError(error);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`
+      }
+    });
+    
+    if (error) {
+      throw error;
     }
   };
 
   const signInWithEmail = async (email: string, password: string) => {
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (error) throw error;
-    } catch (error) {
-      handleAuthError(error);
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    
+    if (error) {
+      throw error;
     }
   };
 
   const signUpWithEmail = async (email: string, password: string) => {
-    try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/auth`
-        }
-      });
-      if (error) throw error;
-      toast({
-        title: "Success",
-        description: "Please check your email to verify your account.",
-      });
-    } catch (error) {
-      handleAuthError(error);
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/auth/callback`
+      }
+    });
+    
+    if (error) {
+      throw error;
     }
   };
 
   const logout = async () => {
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      navigate('/');
-    } catch (error) {
-      handleAuthError(error);
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      throw error;
     }
+    navigate('/');
   };
 
   const value = {
