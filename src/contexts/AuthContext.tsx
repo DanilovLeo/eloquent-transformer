@@ -1,14 +1,7 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { 
-  User,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut
-} from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { User } from '@supabase/supabase-js';
+import { supabase } from '@/integrations/supabase/client';
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from 'react-router-dom';
 
@@ -36,16 +29,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     try {
-      const unsubscribe = auth.onAuthStateChanged((user) => {
-        setUser(user);
-        if (user) {
-          // Reset credits when user signs in
-          setWordCredits(FREE_WORD_CREDITS);
+      // Set up Supabase auth state listener
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+        setUser(session?.user ?? null);
+        if (session?.user) {
+          fetchWordCredits(session.user.id);
         }
         setLoading(false);
       });
 
-      return unsubscribe;
+      // Initial session check
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        setUser(session?.user ?? null);
+        if (session?.user) {
+          fetchWordCredits(session.user.id);
+        }
+        setLoading(false);
+      });
+
+      return () => {
+        subscription.unsubscribe();
+      };
     } catch (error) {
       console.error("Auth initialization error:", error);
       setLoading(false);
@@ -57,11 +61,46 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
-  const useWords = (words: number) => {
+  const fetchWordCredits = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('word_credits')
+        .eq('id', userId)
+        .single();
+
+      if (error) throw error;
+      if (data) {
+        setWordCredits(data.word_credits);
+      }
+    } catch (error) {
+      console.error("Error fetching word credits:", error);
+    }
+  };
+
+  const useWords = async (words: number) => {
+    if (!user) return false;
+    
     if (wordCredits >= words) {
-      setWordCredits(prev => prev - words);
+      const newCredits = wordCredits - words;
+      const { error } = await supabase
+        .from('profiles')
+        .update({ word_credits: newCredits })
+        .eq('id', user.id);
+
+      if (error) {
+        toast({
+          title: "Error",
+          description: "Failed to update word credits. Please try again.",
+          variant: "destructive",
+        });
+        return false;
+      }
+
+      setWordCredits(newCredits);
       return true;
     }
+
     toast({
       title: "Insufficient Credits",
       description: "You've run out of free word credits. Please upgrade your plan to continue.",
@@ -75,12 +114,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     console.error("Auth error:", error);
     let message = "An error occurred during authentication.";
     
-    if (error.code === 'auth/unauthorized-domain') {
-      message = "This domain is not authorized for authentication. Please contact support.";
-    } else if (error.code === 'auth/configuration-not-found') {
-      message = "Authentication service is not properly configured. Please try again later.";
-    } else if (error.code === 'auth/popup-closed-by-user') {
-      message = "Authentication was cancelled. Please try again.";
+    if (error.message) {
+      message = error.message;
     }
 
     toast({
@@ -92,8 +127,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signInWithGoogle = async () => {
     try {
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+      });
+      if (error) throw error;
     } catch (error) {
       handleAuthError(error);
     }
@@ -101,7 +138,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signInWithEmail = async (email: string, password: string) => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (error) throw error;
     } catch (error) {
       handleAuthError(error);
     }
@@ -109,7 +150,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signUpWithEmail = async (email: string, password: string) => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+      if (error) throw error;
     } catch (error) {
       handleAuthError(error);
     }
@@ -117,7 +162,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = async () => {
     try {
-      await signOut(auth);
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
     } catch (error) {
       handleAuthError(error);
     }
