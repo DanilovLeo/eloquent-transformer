@@ -3,13 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTranslation } from "react-i18next";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Globe, LogIn, LogOut } from "lucide-react";
+import { LogIn, LogOut } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,19 +18,9 @@ import { useState } from "react";
 
 export const Navigation = () => {
   const { user, logout } = useAuth();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [showSignOutDialog, setShowSignOutDialog] = useState(false);
-
-  const languages = [
-    { code: 'en', name: 'English' },
-    { code: 'es', name: 'Español' },
-    { code: 'ru', name: 'Русский' },
-    { code: 'ar', name: 'العربية' },
-    { code: 'de', name: 'Deutsch' },
-    { code: 'sv', name: 'Svenska' },
-    { code: 'fr', name: 'Français' }
-  ];
 
   const handleAuthClick = () => {
     navigate('/auth');
@@ -72,24 +56,6 @@ export const Navigation = () => {
               <Link to="/contact">
                 <Button variant="ghost">{t('contacts')}</Button>
               </Link>
-              
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon">
-                    <Globe className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  {languages.map((lang) => (
-                    <DropdownMenuItem
-                      key={lang.code}
-                      onClick={() => i18n.changeLanguage(lang.code)}
-                    >
-                      {lang.name}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
 
               {user ? (
                 <Button variant="ghost" onClick={handleSignOutClick}>
